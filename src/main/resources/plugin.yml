@@ -1,0 +1,24 @@
+name: MathRush
+version: ${project.version}
+main: fr.sam.mathrush.MathRush
+api-version: '1.21'
+description: Smart math challenge events
+author: Sam
+
+commands:
+  mathrush:
+    description: MathRush main command
+    usage: /mathrush <defnum|run|defreward|supprreward|time|stats|top|reload>
+    permission: mathrush.admin
+    aliases: [mr]
+
+permissions:
+  mathrush.admin:
+    description: Full admin access to MathRush
+    default: op
+  mathrush.play:
+    description: Participate in MathRush events
+    default: true
+  mathrush.stats:
+    description: View personal stats
+    default: true

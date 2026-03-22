@@ -1,0 +1,125 @@
+# ╔══════════════════════════════════════╗
+# ║         MathRush v1.0.0              ║
+# ║    Smart Math Challenge Plugin       ║
+# ╚══════════════════════════════════════╝
+
+# Nombre d'événements par jour IRL (1-600)
+events-per-day: 12
+
+# Plage horaire (format HH:mm)
+time:
+  start: "08:00"
+  end: "22:00"
+
+# Durée max d'un événement en secondes
+event-duration: 120
+
+# Compte à rebours avant le calcul (secondes)
+countdown: 5
+
+# Cooldown anti-spam par joueur (secondes)
+answer-cooldown: 2
+
+# Espacement minimum entre événements (minutes)
+min-event-gap: 3
+
+# Difficulté adaptative : augmente avec le streak du joueur
+adaptive-difficulty: true
+
+# Niveaux de difficulté
+difficulty:
+  easy:
+    addition: [1, 50]
+    subtraction: [1, 50]
+    multiplication: [2, 10]
+    division: [2, 8]
+  medium:
+    addition: [10, 200]
+    subtraction: [10, 200]
+    multiplication: [5, 20]
+    division: [3, 15]
+  hard:
+    addition: [50, 999]
+    subtraction: [50, 999]
+    multiplication: [10, 50]
+    division: [5, 25]
+    # Opérations combinées activées en hard
+    combo-operations: true
+
+# Récompenses (MATERIAL:quantité)
+rewards:
+  - "DIAMOND:1"
+  - "GOLD_INGOT:3"
+  - "EMERALD:2"
+  - "IRON_INGOT:8"
+  - "EXPERIENCE_BOTTLE:5"
+  - "GOLDEN_APPLE:1"
+
+# Nombre de récompenses données
+reward-count:
+  min: 1
+  max: 3
+
+# Bonus streak : multiplicateur de récompenses si série de bonnes réponses
+streak:
+  enabled: true
+  # Tous les X bonnes réponses consécutives → bonus
+  threshold: 3
+  # Multiplicateur de quantité
+  multiplier: 2.0
+  # Message spécial
+  announce: true
+
+# Sons (valeurs Bukkit Sound)
+sounds:
+  event-start: "BLOCK_NOTE_BLOCK_PLING"
+  correct: "ENTITY_PLAYER_LEVELUP"
+  wrong: "ENTITY_VILLAGER_NO"
+  timeout: "ENTITY_WITHER_DEATH"
+  countdown-tick: "BLOCK_NOTE_BLOCK_HAT"
+  streak: "UI_TOAST_CHALLENGE_COMPLETE"
+
+# Affichage
+display:
+  # Mode : TITLE, BOSSBAR, BOTH
+  mode: "BOTH"
+  # Couleur de la BossBar : PINK, BLUE, RED, GREEN, YELLOW, PURPLE, WHITE
+  bossbar-color: "GREEN"
+  # Style BossBar : SOLID, SEGMENTED_6, SEGMENTED_10, SEGMENTED_12, SEGMENTED_20
+  bossbar-style: "SEGMENTED_10"
+
+# Messages (& = couleurs Minecraft)
+messages:
+  prefix: "&8┃ &6⚡ &eMathRush &8┃ "
+  countdown: "&e&l%seconds%..."
+  event-start: "&a&l➤ &fUn calcul est apparu ! Tapez la réponse !"
+  event-title: "&e&l%calcul%"
+  event-subtitle: "&7Répondez dans le chat !"
+  correct-answer: "&a✔ &b%player% &aa trouvé &f%answer% &aen &e%time%s &a!"
+  wrong-answer: "&c✘ &7Raté !"
+  event-timeout: "&c⏰ Temps écoulé ! Réponse : &f%answer%"
+  reward-given: "  &8▸ &a+%amount%x &e%item%"
+  streak-msg: "&d🔥 &e%player% &dest en série de &c%streak% &d! (x%multiplier% récompenses)"
+  no-rewards: "&cAucune récompense configurée."
+  defnum-set: "&aNombre d'événements → &e%count%/jour"
+  time-set: "&aPlage horaire → &e%start% &7- &e%end%"
+  rewards-cleared: "&aRécompenses supprimées."
+  rewards-added: "&aRécompenses mises à jour."
+  event-forced: "&aÉvénement forcé !"
+  no-permission: "&cPermission insuffisante."
+  reloaded: "&aConfiguration rechargée."
+  usage: |
+    &e&lMathRush &7- Commandes :
+    &e/mr defnum <n> &7→ Événements/jour
+    &e/mr run &7→ Forcer un événement
+    &e/mr defreward <ITEM:qté> ... &7→ Définir récompenses
+    &e/mr supprreward &7→ Supprimer récompenses
+    &e/mr time <début> <fin> &7→ Plage horaire
+    &e/mr stats [joueur] &7→ Statistiques
+    &e/mr top &7→ Classement
+    &e/mr reload &7→ Recharger config
+  stats-header: "&e&l⚡ Stats de &b%player%"
+  stats-line: "  &8▸ &7%label% : &f%value%"
+  top-header: "&e&l🏆 Top MathRush"
+  top-entry: "  &e#%rank% &b%player% &7- &a%wins% victoires &8(&e%streak% série max&8)"
+  top-empty: "&7Aucune donnée."

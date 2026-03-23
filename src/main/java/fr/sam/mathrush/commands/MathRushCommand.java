@@ -56,6 +56,7 @@ public class MathRushCommand implements CommandExecutor {
             case "defreward" -> handleDefReward(sender, args);
             case "supprreward" -> handleSupprReward(sender);
             case "time" -> handleTime(sender, args);
+            case "def" -> handleDefineDuration(sender, args);
             case "reload" -> handleReload(sender);
             default -> sender.sendMessage(msg.get("usage"));
         }
@@ -124,6 +125,25 @@ public class MathRushCommand implements CommandExecutor {
         plugin.getSchedulerManager().reschedule();
         sender.sendMessage(msg.get("time-set")
                 .replace("%start%", args[1]).replace("%end%", args[2]));
+    }
+
+    private void handleDefineDuration(CommandSender sender, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(Msg.color("&cUsage : /mr def <Temps en secondes (1-600)>"));
+            return;
+        }
+        try {
+            int seconds = Integer.parseInt(args[1]);
+            if (seconds < 1 || seconds > 600) {
+                sender.sendMessage(Msg.color("&cLe temps doit être entre 1 et 600 secondes."));
+                return;
+            }
+            plugin.getConfig().set("event-duration", seconds);
+            plugin.saveConfig();
+            sender.sendMessage(Msg.color("&a✔ &eDurée d'événement définie à &f" + seconds + " &eseconde(s)."));
+        } catch (NumberFormatException e) {
+            sender.sendMessage(Msg.color("&cVeuillez entrer un nombre valide."));
+        }
     }
 
     private boolean handleStats(CommandSender sender, String[] args) {

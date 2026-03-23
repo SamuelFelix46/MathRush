@@ -11,6 +11,7 @@ public class PlayerData {
     private int bestStreak;
     private long bestTimeMs;
     private double totalTimeMs;
+    private int eventAnswerCount; // Nombre de réponses dans l'événement actuel
 
     public PlayerData(UUID uuid) {
         this.uuid = uuid;
@@ -20,6 +21,7 @@ public class PlayerData {
         this.bestStreak = 0;
         this.bestTimeMs = Long.MAX_VALUE;
         this.totalTimeMs = 0;
+        this.eventAnswerCount = 0;
     }
 
     public UUID getUuid() { return uuid; }
@@ -48,6 +50,10 @@ public class PlayerData {
     public void resetStreak() {
         currentStreak = 0;
     }
+
+    public int getEventAnswerCount() { return eventAnswerCount; }
+    public void incrementEventAnswerCount() { eventAnswerCount++; }
+    public void resetEventAnswerCount() { eventAnswerCount = 0; }
 
     // Pour sérialisation YAML
     public void setTotalWins(int v) { totalWins = v; }

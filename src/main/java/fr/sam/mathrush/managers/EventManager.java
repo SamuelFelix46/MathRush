@@ -72,6 +72,11 @@ public class EventManager {
     }
 
     private void launchQuestion() {
+        // Réinitialiser les compteurs de réponses par joueur
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            plugin.getStatsManager().get(p.getUniqueId()).resetEventAnswerCount();
+        }
+
         // Difficulté adaptative : on utilise la difficulté médiane par défaut
         String difficulty = "medium";
         if (plugin.getConfig().getBoolean("adaptive-difficulty", true)) {

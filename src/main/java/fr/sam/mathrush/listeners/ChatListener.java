@@ -42,15 +42,25 @@ public class ChatListener implements Listener {
             return;
         }
 
-        // Anti-spam
+        // Vérifier le nombre de réponses max (4 par défaut)
         UUID uuid = player.getUniqueId();
+        fr.sam.mathrush.models.PlayerData playerData = plugin.getStatsManager().get(uuid);
+        int maxAnswers = 4;
+        if (playerData.getEventAnswerCount() >= maxAnswers) {
+            return; // Ignorer les réponses au-delà de la limite
+        }
+
+        // Anti-spam
         long now = System.currentTimeMillis();
         int cd = plugin.getConfig().getInt("answer-cooldown", 2) * 1000;
         if (cooldowns.containsKey(uuid) && now - cooldowns.get(uuid) < cd) return;
         cooldowns.put(uuid, now);
 
+        // Incrémenter le compteur de réponses
+        playerData.incrementEventAnswerCount();
+
         // Record attempt
-        plugin.getStatsManager().get(uuid).recordAttempt();
+        playerData.recordAttempt();
 
         // Check on main thread
         org.bukkit.Bukkit.getScheduler().runTask(plugin, () -> {

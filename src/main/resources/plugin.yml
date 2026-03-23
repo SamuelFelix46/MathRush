@@ -8,7 +8,7 @@ author: Sam
 commands:
   mathrush:
     description: MathRush main command
-    usage: /mathrush <defnum|run|defreward|supprreward|time|stats|top|reload>
+    usage: /mathrush <defnum|run|defreward|supprreward|time|def|stats|top|reload>
     permission: mathrush.admin
     aliases: [mr]
 

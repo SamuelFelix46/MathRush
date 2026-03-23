@@ -23,16 +23,28 @@ public class RewardManager {
     }
 
     public void giveRewards(Player player) {
-        List<String> rewards = plugin.getConfig().getStringList("rewards");
-        if (rewards.isEmpty()) {
+        List<String> allRewards = plugin.getConfig().getStringList("rewards");
+        if (allRewards.isEmpty()) {
             player.sendMessage(msg.get("no-rewards"));
             return;
+        }
+
+        // Filtrer les items basés sur les pourcentages
+        List<String> rewardsToGive = new ArrayList<>();
+        for (String reward : allRewards) {
+            if (shouldGiveReward(reward)) {
+                rewardsToGive.add(reward);
+            }
+        }
+
+        if (rewardsToGive.isEmpty()) {
+            rewardsToGive = allRewards; // Si tous ont échoué, utiliser tous
         }
 
         int min = plugin.getConfig().getInt("reward-count.min", 1);
         int max = plugin.getConfig().getInt("reward-count.max", 2);
         int count = ThreadLocalRandom.current().nextInt(min, Math.max(min, max) + 1);
-        count = Math.min(count, rewards.size());
+        count = Math.min(count, rewardsToGive.size());
 
         // Streak multiplier
         double multiplier = 1.0;
@@ -44,7 +56,7 @@ public class RewardManager {
             }
         }
 
-        List<String> shuffled = new ArrayList<>(rewards);
+        List<String> shuffled = new ArrayList<>(rewardsToGive);
         Collections.shuffle(shuffled);
 
         for (int i = 0; i < count; i++) {
@@ -52,8 +64,27 @@ public class RewardManager {
         }
     }
 
+    // Vérifier si un item avec pourcentage doit être donné
+    private boolean shouldGiveReward(String rewardStr) {
+        // Format: ITEM:quantité ou ITEM:quantité=pourcentage
+        if (rewardStr.contains("=")) {
+            String[] parts = rewardStr.split("=");
+            if (parts.length == 2) {
+                try {
+                    double percentage = Double.parseDouble(parts[1].trim());
+                    return ThreadLocalRandom.current().nextDouble(100) < percentage;
+                } catch (NumberFormatException e) {
+                    return true; // Si le pourcentage n'est pas valide, donner l'item
+                }
+            }
+        }
+        return true; // Si pas de pourcentage, toujours donner
+    }
+
     private void giveItem(Player player, String rewardStr, double multiplier) {
-        String[] parts = rewardStr.split(":");
+        // Extraire le format ITEM:quantité (ignorer la partie pourcentage)
+        String itemPart = rewardStr.split("=")[0]; // Récupérer avant le "="
+        String[] parts = itemPart.split(":");
         if (parts.length != 2) return;
 
         Material mat = Material.matchMaterial(parts[0].trim().toUpperCase());
